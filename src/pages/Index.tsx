@@ -2,26 +2,14 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import AuthButton from "@/components/AuthButton";
-import { Moon, Sun } from "lucide-react";
-import { useTheme } from "@/hooks/use-theme";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Index = () => {
-  const { theme, toggleTheme } = useTheme();
-
   return (
     <div className="min-h-screen bg-background">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="fixed top-4 right-4 z-50"
-        onClick={toggleTheme}
-      >
-        {theme === 'dark' ? (
-          <Sun className="h-5 w-5" />
-        ) : (
-          <Moon className="h-5 w-5" />
-        )}
-      </Button>
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
+      </div>
       <div className="container mx-auto px-4 py-16 flex flex-col items-center">
         <div className="text-center max-w-3xl">
           <div className="h-16 w-16 rounded-md bg-primary flex items-center justify-center text-primary-foreground font-bold text-2xl mx-auto mb-6">

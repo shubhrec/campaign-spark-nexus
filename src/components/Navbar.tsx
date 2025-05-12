@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import AuthButton from './AuthButton';
+import { ThemeToggle } from './ThemeToggle';
 
 export default function Navbar() {
   return (
@@ -38,6 +39,7 @@ export default function Navbar() {
           </div>
           <div className="flex items-center">
             <div className="flex-shrink-0">
+              <ThemeToggle />
               <AuthButton />
             </div>
           </div>
