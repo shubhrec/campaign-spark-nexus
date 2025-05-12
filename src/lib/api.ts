@@ -141,7 +141,6 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
       headers: {
         'Authorization': `Bearer ${import.meta.env.VITE_TOGETHER_API_KEY}`,
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
       },
       body: JSON.stringify({
         model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
