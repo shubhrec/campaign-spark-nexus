@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import AuthButton from "@/components/AuthButton";
 
 const Index = () => {
   return (
@@ -14,11 +15,7 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/dashboard">
-              <Button className="bg-crm-purple hover:bg-crm-purple-dark">
-                Get Started
-              </Button>
-            </Link>
+            <AuthButton />
             <Link to="/campaigns/create">
               <Button variant="outline">
                 Create Campaign
