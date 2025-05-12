@@ -1,11 +1,13 @@
+// @ts-ignore
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const MIXTRAL_API_URL = "https://api.together.xyz/v1/chat/completions";
-const API_KEY = ""; // This will be set via Supabase secrets
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Content-Type': 'application/json'
 };
 
 serve(async (req) => {
@@ -16,6 +18,13 @@ serve(async (req) => {
 
   try {
     const { intent } = await req.json();
+
+    if (!intent?.trim()) {
+      return new Response(
+        JSON.stringify({ error: 'Intent is required' }),
+        { status: 400, headers: corsHeaders }
+      );
+    }
 
     const response = await fetch(MIXTRAL_API_URL, {
       method: 'POST',
@@ -40,6 +49,10 @@ serve(async (req) => {
       })
     });
 
+    if (!response.ok) {
+      throw new Error('Failed to generate messages from AI service');
+    }
+
     const data = await response.json();
     
     // Extract messages from the response
@@ -51,24 +64,21 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({ messages }),
-      {
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-        },
-      },
+      { headers: corsHeaders }
     );
   } catch (error) {
     console.error('Error:', error);
+    
+    // Return fallback messages on error
     return new Response(
-      JSON.stringify({ error: 'Failed to generate messages' }),
-      {
-        status: 500,
-        headers: {
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-        },
-      },
+      JSON.stringify({ 
+        messages: [
+          'We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.',
+          'As a valued customer, we're excited to share an exclusive offer with you.',
+          'Thank you for being a loyal customer. We have something special just for you!'
+        ]
+      }),
+      { headers: corsHeaders }
     );
   }
 });
