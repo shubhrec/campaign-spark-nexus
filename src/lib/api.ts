@@ -132,32 +132,18 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
       return [
         "We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.",
         "As a valued customer, we're excited to share an exclusive offer with you.",
-        "Thank you for being a loyal customer. We have something special just for you!"
-      ];
-    }
-
-    if (!campaignIntent || typeof campaignIntent !== 'string' || !campaignIntent.trim()) {
-      return [
-        "We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.",
-        "As a valued customer, we're excited to share an exclusive offer with you.",
-        "Thank you for being a loyal customer. We have something special just for you!"
+        "Thank you for being a loyal customer. We have something special just for you!",
+        "As a valued customer, we're excited to share an exclusive offer with you."
       ];
     }
 
     const { data, error } = await supabase.functions.invoke('generate-messages', {
       body: { intent: campaignIntent },
-      body: { intent: campaignIntent },
-      headers: {}
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
     
-    if (error) {
-      console.error('Error generating messages:', error);
-      return [
-        "We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.",
-        "As a valued customer, we're excited to share an exclusive offer with you.",
-        "Thank you for being a loyal customer. We have something special just for you!"
-      ];
-    }
     if (error) {
       console.error('Error generating messages:', error);
       return [
@@ -172,7 +158,6 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
     console.error('Error generating messages:', error);
     return [
       "We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.",
-      "As a valued customer, we're excited to share an exclusive offer with you.",
       "As a valued customer, we're excited to share an exclusive offer with you.",
       "Thank you for being a loyal customer. We have something special just for you!"
     ];
