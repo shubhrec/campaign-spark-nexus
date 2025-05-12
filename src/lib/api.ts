@@ -139,8 +139,8 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
     const response = await fetch('https://api.together.xyz/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${import.meta.env.VITE_TOGETHER_API_KEY}`,
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${import.meta.env.VITE_TOGETHER_API_KEY}`
       },
       body: JSON.stringify({
         model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
@@ -154,13 +154,14 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
             content: campaignIntent
           }
         ],
-        max_tokens: 300,
-        temperature: 0.7
+        temperature: 0.7,
+        max_tokens: 300
       })
     });
 
     if (!response.ok) {
-      throw new Error('Failed to generate messages');
+      const errorData = await response.json();
+      throw new Error(errorData.error?.message || 'Failed to generate messages');
     }
 
     const data = await response.json();
