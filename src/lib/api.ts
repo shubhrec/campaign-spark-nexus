@@ -139,8 +139,8 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
     const response = await fetch('https://api.together.xyz/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${import.meta.env.VITE_TOGETHER_API_KEY}`
+        'Authorization': `Bearer ${import.meta.env.VITE_TOGETHER_API_KEY}`,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
