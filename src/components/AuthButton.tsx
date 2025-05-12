@@ -2,20 +2,21 @@
 import { Button } from "@/components/ui/button";
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/lib/supabase";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function AuthButton() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [signingIn, setSigningIn] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // Check if user is already logged in
     supabase.auth.getSession().then(({ data }) => {
       setUser(data.session?.user ?? null);
       setLoading(false);
-      if (data.session?.user) {
+      if (data.session?.user && location.pathname === '/') {
         navigate('/dashboard');
       }
     });
@@ -25,7 +26,7 @@ export default function AuthButton() {
       (event, session) => {
         setUser(session?.user ?? null);
         setLoading(false);
-        if (event === 'SIGNED_IN') {
+        if (event === 'SIGNED_IN' && location.pathname === '/') {
           navigate('/dashboard');
         }
       }
@@ -34,14 +35,14 @@ export default function AuthButton() {
     return () => {
       subscription.unsubscribe();
     };
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   const handleLogin = useCallback(async () => {
     setSigningIn(true);
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/dashboard`,
+        redirectTo: window.location.origin,
       },
     });
   }, []);
