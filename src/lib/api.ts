@@ -179,3 +179,4 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
       "Thank you for being a loyal customer. We have something special just for you!"
     ];
   }
+}
