@@ -128,7 +128,6 @@ export async function simulateDelivery(campaignId: string, message: string): Pro
 
 export async function generateAIMessages(campaignIntent: string): Promise<string[]> {
   try {
-    // Return default messages if no intent provided
     if (!campaignIntent?.trim()) {
       return [
         "We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.",
@@ -137,7 +136,6 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
       ];
     }
 
-    // Call Together AI API directly
     const response = await fetch('https://api.together.xyz/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -168,7 +166,6 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
     const data = await response.json();
     const content = data.choices[0].message.content;
 
-    // Split the response into individual messages
     return content
       .split(/\d+\./)
       .filter(Boolean)
@@ -182,4 +179,3 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
       "Thank you for being a loyal customer. We have something special just for you!"
     ];
   }
-}
