@@ -128,32 +128,52 @@ export async function simulateDelivery(campaignId: string, message: string): Pro
 
 export async function generateAIMessages(campaignIntent: string): Promise<string[]> {
   try {
-    if (!campaignIntent || typeof campaignIntent !== 'string' || !campaignIntent.trim()) {
-      return [
-        "We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.",
-        "As a valued customer, we're excited to share an exclusive offer with you.",
-        "Thank you for being a loyal customer. We have something special just for you!",
-        "As a valued customer, we're excited to share an exclusive offer with you."
-      ];
-    }
-
-    const { data, error } = await supabase.functions.invoke('generate-messages', {
-      body: { intent: campaignIntent },
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    
-    if (error) {
-      console.error('Error generating messages:', error);
+    // Return default messages if no intent provided
+    if (!campaignIntent?.trim()) {
       return [
         "We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.",
         "As a valued customer, we're excited to share an exclusive offer with you.",
         "Thank you for being a loyal customer. We have something special just for you!"
       ];
     }
-    
-    return data.messages;
+
+    // Call Together AI API directly
+    const response = await fetch('https://api.together.xyz/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${import.meta.env.VITE_TOGETHER_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a marketing expert. Generate 3 unique, engaging marketing messages based on the campaign intent provided. Each message should be concise, persuasive, and suitable for email or SMS campaigns.'
+          },
+          {
+            role: 'user',
+            content: campaignIntent
+          }
+        ],
+        max_tokens: 300,
+        temperature: 0.7
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to generate messages');
+    }
+
+    const data = await response.json();
+    const content = data.choices[0].message.content;
+
+    // Split the response into individual messages
+    return content
+      .split(/\d+\./)
+      .filter(Boolean)
+      .map(msg => msg.trim());
+
   } catch (error) {
     console.error('Error generating messages:', error);
     return [
