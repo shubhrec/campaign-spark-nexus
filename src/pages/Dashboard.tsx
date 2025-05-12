@@ -132,7 +132,7 @@ export default function Dashboard() {
               </div>
             </CardContent>
             <CardFooter>
-              <Link to="/customers" className="text-crm-purple-dark hover:underline text-sm">
+              <Link to="/customers" className="text-crm-purple hover:underline text-sm">
                 View all customers
               </Link>
             </CardFooter>
