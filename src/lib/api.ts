@@ -137,10 +137,11 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
     }
 
     const response = await fetch('https://api.together.xyz/v1/chat/completions', {
-      method: 'POST',
+      method: 'POST', 
       headers: {
         'Authorization': `Bearer ${import.meta.env.VITE_TOGETHER_API_KEY}`,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       body: JSON.stringify({
         model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
@@ -160,8 +161,7 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error?.message || 'Failed to generate messages');
+      throw new Error(`Failed to generate messages: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
@@ -176,7 +176,7 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
     console.error('Error generating messages:', error);
     return [
       "We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.",
-      "As a valued customer, we're excited to share an exclusive offer with you.",
+      "As a valued customer, we're excited to share an exclusive offer with you!", 
       "Thank you for being a loyal customer. We have something special just for you!"
     ];
   }
