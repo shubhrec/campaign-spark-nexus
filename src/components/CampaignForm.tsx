@@ -1,6 +1,7 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/lib/supabase';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -28,6 +29,13 @@ export default function CampaignForm() {
   const [audienceCount, setAudienceCount] = useState(0);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUserId(session?.user?.id || null);
+    });
+  }, []);
 
   useEffect(() => {
     const updateAudienceEstimate = async () => {
@@ -59,13 +67,23 @@ export default function CampaignForm() {
     }
 
     setLoading(true);
+    if (!userId) {
+      toast({
+        title: "Authentication error",
+        description: "Please sign in to create a campaign",
+        variant: "destructive"
+      });
+      setLoading(false);
+      return;
+    }
+
     try {
       // Create campaign
       const campaign = await createCampaign({
         name,
         rules_json: JSON.stringify(ruleGroup),
         audience_count: audienceCount,
-        created_by: 'current-user', // This would be the actual user ID in production
+        created_by: userId,
       });
       
       if (campaign) {
