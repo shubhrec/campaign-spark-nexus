@@ -51,14 +51,14 @@ export default function MessageGenerator({ onSelect }: MessageGeneratorProps) {
           placeholder="Enter your campaign intent (e.g., 'Promote our new summer sale to high-value customers')"
           value={intent}
           onChange={(e) => setIntent(e.target.value)}
-          className="min-h-[80px] bg-secondary/50 border-secondary"
+          className="min-h-[80px] bg-secondary border-border focus:border-primary"
         />
         
         <Button
           variant="outline"
           onClick={handleGenerateClick}
           disabled={loading}
-          className="w-full relative overflow-hidden transition-all duration-200"
+          className="w-full relative overflow-hidden transition-all duration-200 bg-secondary hover:bg-secondary/80 border-border"
         >
           {loading ? (
             <>
@@ -76,17 +76,17 @@ export default function MessageGenerator({ onSelect }: MessageGeneratorProps) {
           {messages.map((message, index) => (
             <Card 
               key={index} 
-              className="border border-secondary bg-secondary/20 animate-fadeIn"
+              className="border border-border bg-secondary animate-fadeIn"
               style={{
                 animationDelay: `${index * 150}ms`
               }}
             >
               <CardContent className="p-4 relative">
-                <p className="text-sm">{message}</p>
+                <p className="text-sm text-foreground/90">{message}</p>
                 <Button 
                   variant="link" 
                   onClick={() => onSelect(message)}
-                  className="text-primary mt-2 p-0 hover:text-primary/80"
+                  className="text-primary mt-2 p-0 hover:text-primary/90"
                 >
                   Use this message
                 </Button>

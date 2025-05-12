@@ -145,8 +145,8 @@ export default function CampaignForm() {
           <MessageGenerator onSelect={handleMessageSelect} />
           
           {message && (
-            <div className="mt-2 p-3 border rounded-md bg-secondary/20 border-secondary">
-              <p className="text-sm">{message}</p>
+            <div className="mt-2 p-3 border rounded-md bg-secondary border-border">
+              <p className="text-sm text-foreground/90">{message}</p>
             </div>
           )}
         </div>
@@ -154,7 +154,7 @@ export default function CampaignForm() {
       
       <CardFooter className="flex justify-end">
         <Button 
-          className="bg-primary hover:bg-primary/80"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground"
           onClick={handleSubmit}
           disabled={loading}
         >
