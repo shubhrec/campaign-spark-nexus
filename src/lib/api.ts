@@ -130,9 +130,9 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
   try {
     if (!campaignIntent || typeof campaignIntent !== 'string' || !campaignIntent.trim()) {
       return [
-        'We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.',
-        'As a valued customer, we're excited to share an exclusive offer with you.',
-        'Thank you for being a loyal customer. We have something special just for you!'
+        "We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.",
+        "As a valued customer, we're excited to share an exclusive offer with you.",
+        "Thank you for being a loyal customer. We have something special just for you!"
       ];
     }
 
@@ -144,9 +144,9 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
     if (error) {
       console.error('Error generating messages:', error);
       return [
-        'We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.',
-        'As a valued customer, we're excited to share an exclusive offer with you.',
-        'Thank you for being a loyal customer. We have something special just for you!'
+        "We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.",
+        "As a valued customer, we're excited to share an exclusive offer with you.",
+        "Thank you for being a loyal customer. We have something special just for you!"
       ];
     }
     
@@ -154,9 +154,9 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
   } catch (error) {
     console.error('Error generating messages:', error);
     return [
-      'We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.',
-      'As a valued customer, we're excited to share an exclusive offer with you.',
-      'Thank you for being a loyal customer. We have something special just for you!'
+      "We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.",
+      "As a valued customer, we're excited to share an exclusive offer with you.",
+      "Thank you for being a loyal customer. We have something special just for you!"
     ];
   }
 }
