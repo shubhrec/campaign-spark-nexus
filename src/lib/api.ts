@@ -129,16 +129,20 @@ export async function simulateDelivery(campaignId: string, message: string): Pro
 export async function generateAIMessages(campaignIntent: string): Promise<string[]> {
   try {
     const { data, error } = await supabase.functions.invoke('generate-messages', {
-      body: { intent: campaignIntent }
+      body: { intent: campaignIntent },
+      headers: {
+        'Content-Type': 'application/json'
+      }
     });
     
-    if (error) throw error;
+    if (error || !data?.messages) {
+      console.error('Error generating messages:', error);
+      throw error;
+    }
+    
     return data.messages;
   } catch (error) {
     console.error('Error generating messages:', error);
-    return [
-      `We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.`,
-      `As a valued customer, we're excited to share an exclusive offer with you.`
-    ];
+    throw new Error('Failed to generate messages. Please try again.');
   }
 }
