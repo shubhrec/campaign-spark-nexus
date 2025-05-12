@@ -128,7 +128,7 @@ export async function simulateDelivery(campaignId: string, message: string): Pro
 
 export async function generateAIMessages(campaignIntent: string): Promise<string[]> {
   try {
-    if (!campaignIntent?.trim()) {
+    if (!campaignIntent || typeof campaignIntent !== 'string' || !campaignIntent.trim()) {
       return [
         'We noticed you've been shopping with us and we'd love to offer you a special discount on your next purchase.',
         'As a valued customer, we're excited to share an exclusive offer with you.',
@@ -138,9 +138,7 @@ export async function generateAIMessages(campaignIntent: string): Promise<string
 
     const { data, error } = await supabase.functions.invoke('generate-messages', {
       body: { intent: campaignIntent },
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: {}
     });
     
     if (error) {
